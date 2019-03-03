@@ -1,0 +1,51 @@
+devDependencies:
+  '@types/react': 16.8.6
+  '@types/react-native-macos': /@types/react-native/0.57.38
+  prettier: 1.16.4
+  typescript: 3.3.3333
+packages:
+  /@types/prop-types/15.7.0:
+    dev: true
+    resolution:
+      integrity: sha512-eItQyV43bj4rR3JPV0Skpl1SncRCdziTEK9/v8VwXmV6d/qOUO8/EuWeHBbCZcsfSHfzI5UyMJLCSXtxxznyZg==
+  /@types/react-native/0.57.38:
+    dependencies:
+      '@types/prop-types': 15.7.0
+      '@types/react': 16.8.6
+    dev: true
+    resolution:
+      integrity: sha512-bmY2ad/vQgP0HMT7Q7EQzirDBt5ibp+kBHclTnY7/i5MrdqE1oY+3b9NkDg3ohXlumr7p5stAG6I55nhfeUV6Q==
+  /@types/react/16.8.6:
+    dependencies:
+      '@types/prop-types': 15.7.0
+      csstype: 2.6.2
+    dev: true
+    resolution:
+      integrity: sha512-bN9qDjEMltmHrl0PZRI4IF2AbB7V5UlRfG+OOduckVnRQ4VzXVSzy/1eLAh778IEqhTnW0mmgL9yShfinNverA==
+  /csstype/2.6.2:
+    dev: true
+    resolution:
+      integrity: sha512-Rl7PvTae0pflc1YtxtKbiSqq20Ts6vpIYOD5WBafl4y123DyHUeLrRdQP66sQW8/6gmX8jrYJLXwNeMqYVJcow==
+  /prettier/1.16.4:
+    dev: true
+    engines:
+      node: '>=4'
+    hasBin: true
+    resolution:
+      integrity: sha512-ZzWuos7TI5CKUeQAtFd6Zhm2s6EpAD/ZLApIhsF9pRvRtM1RFo61dM/4MSRUA0SuLugA/zgrZD8m0BaY46Og7g==
+  /typescript/3.3.3333:
+    dev: true
+    engines:
+      node: '>=4.2.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-JjSKsAfuHBE/fB2oZ8NxtRTk5iGcg6hkYXMnZ3Wc+b2RSqejEqTaem11mHASMnFilHrax3sLK0GDzcJrekZYLw==
+registry: 'https://registry.npmjs.org/'
+shrinkwrapMinorVersion: 9
+shrinkwrapVersion: 3
+specifiers:
+  '@types/react': ^16.8.6
+  '@types/react-native-macos': 'npm:@types/react-native@^0.57.38'
+  prettier: ^1.16.4
+  react-native-macos: ^0.19.0
+  typescript: ^3.3.3333

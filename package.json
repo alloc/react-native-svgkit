@@ -1,0 +1,26 @@
+{
+  "name": "@alloc/react-native-svgkit",
+  "version": "0.0.0",
+  "main": "lib/SVGKView.js",
+  "description": "SVG support for react-native-macos",
+  "repository": "alloc/react-native-svgkit",
+  "files": [
+    "lib",
+    "macos",
+    "SVGKit"
+  ],
+  "scripts": {
+    "build": "tsc -p .",
+    "prepare": "git submodule update --init && npm run build"
+  },
+  "peerDependencies": {
+    "react-native-macos": ">=0.19.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.6",
+    "@types/react-native-macos": "npm:@types/react-native@^0.57.38",
+    "prettier": "^1.16.4",
+    "react-native-macos": "^0.19.0",
+    "typescript": "^3.3.3333"
+  }
+}

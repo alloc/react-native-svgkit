@@ -1,0 +1,19 @@
+{
+  "name": "example",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p . && cpx 'src/**/*.svg' lib",
+    "start": "react-native-macos start"
+  },
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-native": "link:../node_modules/react-native-macos",
+    "react-native-svgkit": "link:.."
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.6",
+    "@types/react-native": "^0.57.38",
+    "cpx": "^1.5.0",
+    "typescript": "^3.3.3333"
+  }
+}
