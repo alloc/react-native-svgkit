@@ -6,7 +6,7 @@ import {
   NativeSyntheticEvent,
   requireNativeComponent,
   StyleSheet,
-  ViewProps
+  ViewProps,
 } from 'react-native-macos'
 
 export type SVGErrorEvent = NativeSyntheticEvent<{ error: string }>
