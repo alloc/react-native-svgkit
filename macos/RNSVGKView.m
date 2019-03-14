@@ -212,9 +212,11 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
 
     // SVGKLayeredImageView does not scale its layers automatically.
     if (_tintColor) {
-      CALayer *layer = _image.CALayerTree;
-      layer.position = (NSPoint){size.width / 2, size.height / 2};
-      layer.affineTransform = CGAffineTransformMakeScale(scale, scale);
+      [CALayer performWithoutAnimation:^{
+        CALayer *layer = image.CALayerTree;
+        layer.position = (NSPoint){size.width / 2, size.height / 2};
+        layer.affineTransform = CGAffineTransformMakeScale(scale, scale);
+      }];
     }
   }
 }
