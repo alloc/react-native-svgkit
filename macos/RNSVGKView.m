@@ -219,15 +219,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
   }
 }
 
-NSString *RCTPrintLayerTree(CALayer *layer, int depth) {
-  NSString *indent = [@"" stringByPaddingToLength:(depth * 2) withString:@"  " startingAtIndex:0];
-  NSString *result = [NSString stringWithFormat:@"\n%@%@ (position = %@, bounds = %@)", indent, layer, NSStringFromPoint(layer.position), NSStringFromRect(layer.bounds)];
-  for (CALayer *childLayer in layer.sublayers) {
-    result = [result stringByAppendingString:RCTPrintLayerTree(childLayer, depth + 1)];
-  }
-  return result;
-}
-
 - (void)setFrame:(NSRect)frame
 {
   [super setFrame:frame];
