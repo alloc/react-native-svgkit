@@ -23,6 +23,7 @@
   RCTBridge *_bridge;
   RNSVGKImage *_image;
   SVGKImageView *_imageView;
+  BOOL _ignoreResize;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge
@@ -93,6 +94,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
       _onLoadEnd(nil);
     }
   } else {
+    // Avoid resizing before updating the image.
+    _ignoreResize = YES;
+
     RCTBridge *bridge = _bridge;
     RCTExecuteOnUIManagerQueue(^{
       if (image.hasSize) {
@@ -101,6 +105,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
       }
 
       [bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
+        self->_ignoreResize = NO;
         if (image == self->_image) {
           [self updateImageView:image.SVGKImage];
 
@@ -226,7 +231,9 @@ NSString *RCTPrintLayerTree(CALayer *layer, int depth) {
 - (void)setFrame:(NSRect)frame
 {
   [super setFrame:frame];
-  [self resizeImage];
+  if (_ignoreResize == NO) {
+    [self resizeImage];
+  }
 }
 
 - (void)removeImage
