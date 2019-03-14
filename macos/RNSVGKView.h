@@ -9,5 +9,6 @@
 @property (nonatomic, strong) NSData *data;
 @property (nonatomic, strong) RCTImageSource *source;
 @property (nonatomic, copy) NSColor *tintColor;
+@property (nonatomic, copy) NSString *cacheKey;
 
 @end

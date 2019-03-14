@@ -17,6 +17,7 @@ export type SVGLoadEvent = NativeSyntheticEvent<{
 interface Props extends ViewProps {
   data?: string
   source?: ImageURISource | ImageRequireSource
+  cacheKey?: string
   tintColor?: string
   onLoadStart?: () => void
   onError?: (event: SVGErrorEvent) => void

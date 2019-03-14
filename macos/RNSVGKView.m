@@ -1,6 +1,7 @@
 #import "RNSVGKView.h"
-#import "SVGKit.h"
+#import "RNSVGKImageCache.h"
 #import "SVGKImageView+Tint.h"
+#import "SVGKit.h"
 
 #import <React/NSView+React.h>
 #import <React/RCTNetworking.h>
@@ -8,7 +9,7 @@
 #import <React/RCTUIManager.h>
 #import <React/RCTUIManagerUtils.h>
 
-@interface RNSVGKView ()
+@interface RNSVGKView () <RNSVGKImageObserver>
 
 @property (nonatomic, copy) RCTDirectEventBlock onLoadStart;
 @property (nonatomic, copy) RCTDirectEventBlock onError;
@@ -20,9 +21,8 @@
 @implementation RNSVGKView
 {
   RCTBridge *_bridge;
-  SVGKImage *_image;
+  RNSVGKImage *_image;
   SVGKImageView *_imageView;
-  RCTNetworkTask *_pendingImage;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge
@@ -38,109 +38,71 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-  BOOL sourceChanged = [changedProps containsObject:@"source"];
-  if (sourceChanged && _source == nil) {
-    [self stopLoading];
-  }
+  RNSVGKImage *image;
 
   // The "data" prop always overrides the "source" prop.
   if (_data) {
     if ([changedProps containsObject:@"data"]) {
-      [self removeImage];
-      [self renderImage:_data fromSource:nil];
+      image = [_bridge.svgCache parseSvg:_data cacheKey:_cacheKey];
     }
-  } else {
-    if (_image) {
-      [self removeImage];
-    }
-    if (sourceChanged && _source) {
-      [self loadSource:_source];
-    }
-  }
-}
-
-- (void)loadSource:(RCTImageSource *)source
-{
-  [_pendingImage cancel];
-
-  if (_onLoadStart) {
-    _onLoadStart(nil);
-  }
-
-  _pendingImage = [_bridge.networking
-    networkTaskWithRequest:source.request
-    completionBlock:^(__unused NSURLResponse *response, NSData *data, NSError *error) {
-      RCTExecuteOnMainQueue(^{
-        [self onSourceLoaded:source data:data error:error];
-      });
-    }];
-
-  [_pendingImage start];
-}
-
-- (void)onSourceLoaded:(RCTImageSource *)source data:(NSData *)data error:(NSError *)error
-{
-  RCTAssertMainQueue();
-  if (source != _source || _data) {
-    return; // The source changed while it was loading.
-  }
-
-  _pendingImage = nil;
-
-  if (error) {
-    if (_onError) {
-      _onError(@{
-        @"error": error.localizedDescription,
-      });
-    }
-    if (_onLoadEnd) {
-      _onLoadEnd(nil);
-    }
-  } else if (data) {
-    [self renderImage:data fromSource:source];
-  }
-}
-
-- (void)renderImage:(NSData *)data fromSource:(RCTImageSource *__nullable)source
-{
-  // Avoid parsing on the main thread.
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    SVGKImage *image = [SVGKImage imageWithData:data];
-    RCTExecuteOnMainQueue(^{
-      // The source may have changed while we were parsing.
-      if (source ? source == self->_source && !self->_data : data == self->_data) {
-        self.image = image;
+  } else if (_source) {
+    if ([changedProps containsObject:@"source"]) {
+      image = [_bridge.svgCache loadSource:_source cacheKey:_cacheKey];
+      if (_onLoadStart) {
+        _onLoadStart(nil);
       }
-    });
-  });
+    }
+  } else if (_cacheKey) {
+    if ([changedProps containsObject:@"cacheKey"]) {
+      image = _bridge.svgCache.images[_cacheKey];
+    }
+  }
+
+  // Remove the previous image while loading.
+  if (!image || !image.isLoaded) {
+    [self removeImage];
+  }
+
+  if (image) {
+    _image = image;
+    [image addObserver:self];
+
+    // Display instantly if cached.
+    if (image.isLoaded) {
+      [self svgImageDidLoad:image];
+    }
+  }
 }
 
-- (void)setImage:(SVGKImage *)image
+- (void)svgImageDidLoad:(RNSVGKImage *)image
 {
   RCTAssertMainQueue();
 
-  NSArray<NSError *> *errors = image.parseErrorsAndWarnings.errorsFatal;
-  if (errors.count > 0) {
+  // Ensure the source didn't change while loading.
+  if (image != _image) {
+    return;
+  }
+
+  if (image.error) {
     if (_onError) {
       _onError(@{
-        @"error": errors[0].localizedDescription,
+        @"error": image.error.localizedDescription,
       });
     }
     if (_source && _onLoadEnd) {
       _onLoadEnd(nil);
     }
   } else {
-    _image = image;
-
-    NSSize size = image.size;
     RCTBridge *bridge = _bridge;
     RCTExecuteOnUIManagerQueue(^{
-      RCTShadowView *shadowView = [bridge.uiManager shadowViewForReactTag:self.reactTag];
-      shadowView.intrinsicContentSize = size;
+      if (image.hasSize) {
+        RCTShadowView *shadowView = [bridge.uiManager shadowViewForReactTag:self.reactTag];
+        shadowView.intrinsicContentSize = image.size;
+      }
 
       [bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
         if (image == self->_image) {
-          [self updateImageView:image];
+          [self updateImageView:image.SVGKImage];
 
           RCTImageSource *source = self->_source;
           if (source == nil) {
@@ -171,7 +133,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
 - (void)updateImageView:(SVGKImage *)image
 {
   RCTAssertMainQueue();
-  RCTAssert(self.subviews.count == 0, @"Previous image must be removed from its superview");
+  if (_imageView.superview) {
+    [_imageView removeFromSuperview];
+  }
 
   if (_tintColor) {
     _imageView = [[SVGKLayeredImageView alloc] initWithSVGKImage:image];
@@ -190,6 +154,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
   _tintColor = tintColor;
 
   if (_imageView) {
+    SVGKImage *image = _imageView.image;
+
     if (wasTinted) {
       if (tintColor) {
         // Retint the current image view.
@@ -197,18 +163,17 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
         return;
       }
       // Clone the image to create an untinted CALayer tree.
-      _image = [[SVGKImage alloc] initWithParsedSVG:_image.parseErrorsAndWarnings
-                                         fromSource:_image.source];
+      image = _image.SVGKImage;
     }
 
     // Replace the image view when tint is added or removed.
-    [_imageView removeFromSuperview];
-    [self updateImageView:_image];
+    [self updateImageView:image];
   }
 }
 
 - (void)resizeImage
 {
+  RCTAssertMainQueue();
   if (_imageView) {
     NSSize maxSize = self.frame.size;
 
@@ -216,19 +181,17 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
     NSSize size = maxSize;
     CGFloat scale = 1;
 
-    if (_image.hasSize) {
-      NSSize imageSize = _image.size;
+    SVGKImage *image = _imageView.image;
+    if (image.hasSize) {
+      NSSize imageSize = image.size;
 
       CGFloat widthRatio = maxSize.width / imageSize.width;
       CGFloat heightRatio = maxSize.height / imageSize.height;
 
-      size = imageSize;
       if (widthRatio > heightRatio) {
-        size.width *= heightRatio;
-        size.height = maxSize.height;
+        size = (CGSize){imageSize.width * heightRatio, maxSize.height};
       } else {
-        size.width = maxSize.width;
-        size.height *= widthRatio;
+        size = (CGSize){maxSize.width, imageSize.height * widthRatio};
       }
 
       if (_tintColor) {
@@ -268,24 +231,22 @@ NSString *RCTPrintLayerTree(CALayer *layer, int depth) {
 
 - (void)removeImage
 {
-  [_imageView removeFromSuperview];
+  RCTAssertMainQueue();
+  if (_image) {
+    [_image removeObserver:self];
+    _image = nil;
 
-  _image = nil;
-  _imageView = nil;
-}
-
-- (void)stopLoading
-{
-  if (_pendingImage) {
-    [_pendingImage cancel];
-    _pendingImage = nil;
+    if (_imageView) {
+      [_imageView removeFromSuperview];
+      _imageView = nil;
+    }
   }
 }
 
 - (void)viewDidMoveToWindow
 {
   if (self.window == nil) {
-    [self stopLoading];
+    [_image removeObserver:self];
   }
 }
 

@@ -121,6 +121,7 @@
 		70408039222CAAD1002B7C38 /* RNSVGKShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408033222CAAD1002B7C38 /* RNSVGKShadowView.m */; };
 		7040803A222CAAD1002B7C38 /* RNSVGKViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408034222CAAD1002B7C38 /* RNSVGKViewManager.m */; };
 		7040803B222CAAD1002B7C38 /* RNSVGKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408036222CAAD1002B7C38 /* RNSVGKView.m */; };
+		70970B88223AC1C4006EAF08 /* RNSVGKImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 70970B87223AC1C4006EAF08 /* RNSVGKImageCache.m */; };
 		70E665D922334EDD0050B186 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 70408030222CAA9A002B7C38 /* libxml2.tbd */; };
 /* End PBXBuildFile section */
 
@@ -464,6 +465,8 @@
 		70408036222CAAD1002B7C38 /* RNSVGKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSVGKView.m; sourceTree = "<group>"; };
 		70408037222CAAD1002B7C38 /* RNSVGKViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKViewManager.h; sourceTree = "<group>"; };
 		70408038222CAAD1002B7C38 /* RNSVGKShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKShadowView.h; sourceTree = "<group>"; };
+		70970B7E223AC1C4006EAF08 /* RNSVGKImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKImageCache.h; sourceTree = "<group>"; };
+		70970B87223AC1C4006EAF08 /* RNSVGKImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSVGKImageCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -892,6 +895,8 @@
 		70408032222CAAC7002B7C38 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				70970B7E223AC1C4006EAF08 /* RNSVGKImageCache.h */,
+				70970B87223AC1C4006EAF08 /* RNSVGKImageCache.m */,
 				70408038222CAAD1002B7C38 /* RNSVGKShadowView.h */,
 				70408033222CAAD1002B7C38 /* RNSVGKShadowView.m */,
 				70408035222CAAD1002B7C38 /* RNSVGKView.h */,
@@ -1070,6 +1075,7 @@
 				703958F3222D72D2004D2364 /* CALayerWithClipRender.m in Sources */,
 				70395943222D72D2004D2364 /* SVGAngle.m in Sources */,
 				7039594A222D72D2004D2364 /* SVGKSourceURL.m in Sources */,
+				70970B88223AC1C4006EAF08 /* RNSVGKImageCache.m in Sources */,
 				7039594B222D72D2004D2364 /* SVGKSourceLocalFile.m in Sources */,
 				70395950222D72D2004D2364 /* SVGKExporterNSData.m in Sources */,
 				70395946222D72D2004D2364 /* SVGTransform.m in Sources */,
