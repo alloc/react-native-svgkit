@@ -23,6 +23,8 @@
   RCTBridge *_bridge;
   RNSVGKImage *_image;
   SVGKImageView *_imageView;
+  BOOL _isMeasuringImage;
+  BOOL _isImageMeasured;
   BOOL _ignoreResize;
 }
 
@@ -94,48 +96,83 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
       _onLoadEnd(nil);
     }
   } else {
-    // Avoid resizing before updating the image.
-    _ignoreResize = YES;
+    _isImageMeasured = NO;
 
-    RCTBridge *bridge = _bridge;
-    RCTExecuteOnUIManagerQueue(^{
-      if (image.hasSize) {
-        RCTShadowView *shadowView = [bridge.uiManager shadowViewForReactTag:self.reactTag];
-        shadowView.intrinsicContentSize = image.size;
+    SVGKImage *rawImage = image.SVGKImage;
+    void (^didLoad)(void) = ^{
+      [self renderImage:rawImage];
+
+      RCTImageSource *source = self->_source;
+      if (source == nil) {
+        return;
       }
 
-      [bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
+      if (self->_onLoad) {
+        self->_onLoad(@{
+          @"source": @{
+            @"width": @(source.size.width),
+            @"height": @(source.size.height),
+            @"url": source.request.URL.absoluteString,
+          },
+        });
+      }
+      if (self->_onLoadEnd) {
+        self->_onLoadEnd(nil);
+      }
+    };
+
+    if (CGSizeEqualToSize(self.frame.size, CGSizeZero)) {
+      return didLoad();
+    }
+
+    // Disable "setFrame:" sync while measuring the image.
+    _ignoreResize = YES;
+    [self measureImage:rawImage
+       sizeConstraints:self.frame.size
+      completionBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
         self->_ignoreResize = NO;
         if (image == self->_image) {
-          [self updateImageView:image.SVGKImage];
-
-          RCTImageSource *source = self->_source;
-          if (source == nil) {
-            return;
-          }
-
-          if (self->_onLoad) {
-            self->_onLoad(@{
-              @"source": @{
-                @"width": @(source.size.width),
-                @"height": @(source.size.height),
-                @"url": source.request.URL.absoluteString,
-              },
-            });
-          }
-          if (self->_onLoadEnd) {
-            self->_onLoadEnd(nil);
-          }
+          didLoad();
         }
       }];
-
-      // Run our UI block asap.
-      [bridge.uiManager setNeedsLayout];
-    });
   }
 }
 
-- (void)updateImageView:(SVGKImage *)image
+- (void)measureImage:(SVGKImage *)image
+     sizeConstraints:(NSSize)parentSize
+     completionBlock:(RCTViewManagerUIBlock)uiBlock
+{
+  RCTAssertMainQueue();
+  _isMeasuringImage = YES;
+
+  RCTBridge *bridge = _bridge;
+  RCTExecuteOnUIManagerQueue(^{
+    if (image.hasSize) {
+      RCTShadowView *shadowView = [bridge.uiManager shadowViewForReactTag:self.reactTag];
+
+      BOOL isWidthZero = (YGFloatIsUndefined(shadowView.width.value) && parentSize.width == 0);
+      BOOL isHeightZero = (YGFloatIsUndefined(shadowView.height.value) && parentSize.height == 0);
+      if (isWidthZero != isHeightZero && (isWidthZero || isHeightZero)) {
+        shadowView.intrinsicContentSize = [self getImageSize:image
+                                                     maxSize:parentSize
+                                                       scale:nil];
+
+        RCTLog(@"RNSVGKView(%p).intrinsicContentSize = %@", self, NSStringFromSize(shadowView.intrinsicContentSize));
+      }
+    }
+
+    [bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
+      self->_isMeasuringImage = NO;
+      self->_isImageMeasured = YES;
+      uiBlock(uiManager, viewRegistry);
+    }];
+
+    // Run our UI block asap.
+    [bridge.uiManager setNeedsLayout];
+  });
+}
+
+- (void)renderImage:(SVGKImage *)image
 {
   RCTAssertMainQueue();
   if (_imageView.superview) {
@@ -149,7 +186,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
     _imageView = [[SVGKFastImageView alloc] initWithSVGKImage:image];
   }
 
-  [self resizeImage];
+  [self resizeImageView];
   [self addSubview:_imageView];
 }
 
@@ -172,48 +209,30 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
     }
 
     // Replace the image view when tint is added or removed.
-    [self updateImageView:image];
+    [self renderImage:image];
   }
 }
 
-- (void)resizeImage
+- (void)resizeImageView
 {
   RCTAssertMainQueue();
   if (_imageView) {
-    NSSize maxSize = self.frame.size;
-
-    // Fit the frame exactly by default.
-    NSSize size = maxSize;
     CGFloat scale = 1;
-
-    SVGKImage *image = _imageView.image;
-    if (image.hasSize) {
-      NSSize imageSize = image.size;
-
-      CGFloat widthRatio = maxSize.width / imageSize.width;
-      CGFloat heightRatio = maxSize.height / imageSize.height;
-
-      if (widthRatio > heightRatio) {
-        size = (CGSize){imageSize.width * heightRatio, maxSize.height};
-      } else {
-        size = (CGSize){maxSize.width, imageSize.height * widthRatio};
-      }
-
-      if (_tintColor) {
-        scale = size.width / imageSize.width;
-      }
-    }
+    NSSize maxSize = self.frame.size;
+    NSSize size = [self getImageSize:_imageView.image
+                             maxSize:maxSize
+                               scale:&scale];
 
     _imageView.frame = (NSRect){
-      { (maxSize.width - size.width) / 2,
-        (maxSize.height - size.height) / 2 },
+      { MAX(0, (maxSize.width - size.width) / 2),
+        MAX(0, (maxSize.height - size.height) / 2) },
       size
     };
 
     // SVGKLayeredImageView does not scale its layers automatically.
     if (_tintColor) {
       [CALayer performWithoutAnimation:^{
-        CALayer *layer = image.CALayerTree;
+        CALayer *layer = self->_imageView.image.CALayerTree;
         layer.position = (NSPoint){size.width / 2, size.height / 2};
         layer.affineTransform = CGAffineTransformMakeScale(scale, scale);
       }];
@@ -221,12 +240,65 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
   }
 }
 
+- (NSSize)getImageSize:(SVGKImage *)image maxSize:(NSSize)maxSize scale:(CGFloat *)scale
+{
+  if (image.hasSize) {
+    NSSize size = image.size;
+    CGFloat imageWidth = size.width;
+
+    if (maxSize.width == 0) {
+      maxSize.width = INFINITY;
+    }
+    if (maxSize.height == 0) {
+      maxSize.height = INFINITY;
+    }
+
+    if (maxSize.width < INFINITY || maxSize.height < INFINITY) {
+      CGFloat widthRatio = maxSize.width / size.width;
+      CGFloat heightRatio = maxSize.height / size.height;
+
+      if (widthRatio > heightRatio) {
+        size = (CGSize){size.width * heightRatio, maxSize.height};
+      } else {
+        size = (CGSize){maxSize.width, size.height * widthRatio};
+      }
+    }
+
+    if (scale) {
+      *scale = size.width / imageWidth;
+    }
+    return size;
+  }
+
+  // Fit the frame exactly by default.
+  return maxSize;
+}
+
 - (void)setFrame:(NSRect)frame
 {
   [super setFrame:frame];
-  if (_ignoreResize == NO) {
-    [self resizeImage];
+  if (_isMeasuringImage) {
+    return;
   }
+  if (_isImageMeasured) {
+    return [self resizeImageView];
+  }
+  if (CGSizeEqualToSize(frame.size, CGSizeZero)) {
+    return; // No point in measuring without a size constraint.
+  }
+  RNSVGKImage *image = _image;
+  [self measureImage:_imageView.image
+     sizeConstraints:frame.size
+    completionBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
+      if (image == self->_image) {
+        if (CGRectEqualToRect(frame, self.frame)) {
+          [self resizeImageView];
+        } else {
+          self->_isImageMeasured = NO;
+          self.frame = self.frame;
+        }
+      }
+    }];
 }
 
 - (void)removeImage
