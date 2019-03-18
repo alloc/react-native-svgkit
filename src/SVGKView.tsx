@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ViewProps,
 } from 'react-native-macos'
+import { SVGKPreloadOptions, preloadSvg } from './SVGKCache'
 
 export type SVGErrorEvent = NativeSyntheticEvent<{ error: string }>
 export type SVGLoadEvent = NativeSyntheticEvent<{
@@ -34,6 +35,26 @@ export const SVGKView = (props: Props) => (
     style={computeStyle(props)}
   />
 )
+
+/**
+ * Create a component that renders the given <svg> source and preloads it.
+ */
+SVGKView.preload = (
+  options: SVGKPreloadOptions & {
+    style?: ViewProps['style']
+    tintColor?: string
+  },
+) => {
+  const cacheKey = preloadSvg(options)
+  return (props: Props) => (
+    <SVGKView
+      tintColor={options.tintColor}
+      {...props}
+      style={[props.style, options.style]}
+      cacheKey={cacheKey}
+    />
+  )
+}
 
 function computeStyle(props: Props) {
   const style = StyleSheet.flatten(props.style) || {}
