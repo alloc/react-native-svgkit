@@ -156,8 +156,6 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
         shadowView.intrinsicContentSize = [self getImageSize:image
                                                      maxSize:parentSize
                                                        scale:nil];
-
-        RCTLog(@"RNSVGKView(%p).intrinsicContentSize = %@", self, NSStringFromSize(shadowView.intrinsicContentSize));
       }
     }
 
