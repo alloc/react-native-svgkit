@@ -272,9 +272,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
   return maxSize;
 }
 
-- (void)setFrame:(NSRect)frame
+- (void)reactSetFrame:(NSRect)frame
 {
-  [super setFrame:frame];
+  [super reactSetFrame:frame];
   if (_isMeasuringImage) {
     return;
   }
