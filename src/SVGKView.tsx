@@ -36,6 +36,8 @@ export const SVGKView = (props: Props) => (
   />
 )
 
+SVGKView.displayName = 'SVGKView'
+
 /**
  * Create a component that renders the given <svg> source and preloads it.
  */
@@ -44,9 +46,9 @@ SVGKView.preload = (
     style?: ViewProps['style']
     tintColor?: string
   },
-) => {
+): React.SFC<Props> => {
   const cacheKey = preloadSvg(options)
-  return (props: Props) => (
+  return props => (
     <SVGKView
       tintColor={options.tintColor}
       {...props}
