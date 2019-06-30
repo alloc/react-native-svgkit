@@ -68,7 +68,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
     [self removeImage];
   }
 
-  if (image) {
+  if (image && image != _image) {
     _image = image;
     [image addObserver:self];
 
