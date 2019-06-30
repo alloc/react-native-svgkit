@@ -37,8 +37,8 @@
                                    launchOptions:nil];
 
   _window = [[RCTWindow alloc] initWithBridge:_bridge
-                                  contentRect:NSMakeRect(200, 500, 1000, 500)
-                                    styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskResizable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskClosable)
+                                  contentRect:NSMakeRect(200, 500, 800, 800)
+                                    styleMask:(NSWindowStyleMaskTitled | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskClosable)
                                         defer:NO];
 
   _window.contentView = [[RCTRootView alloc] initWithBridge:_bridge

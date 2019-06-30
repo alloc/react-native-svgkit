@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native-macos'
-import { Example } from './lib/Example'
+import { Example } from './src/Example'
 
 AppRegistry.registerComponent('RNSVGKitExample', () => Example)
