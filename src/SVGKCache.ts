@@ -50,7 +50,6 @@ export function preloadSvg(options: SVGKPreloadOptions) {
   } else {
     userCounts[cacheKey]++
   }
-  console.log('preloadSvg: "%O" (count: %O)', cacheKey, userCounts[cacheKey])
   return cacheKey
 }
 
@@ -61,7 +60,6 @@ export function preloadSvg(options: SVGKPreloadOptions) {
  */
 export function unloadSvg(cacheKey: string) {
   if (userCounts[cacheKey]) {
-    console.log('unloadSvg: "%O" (count: %O)', cacheKey, userCounts[cacheKey])
     if (userCounts[cacheKey] == 1) {
       delete userCounts[cacheKey]
       nativeCache.unloadSvg(cacheKey)
