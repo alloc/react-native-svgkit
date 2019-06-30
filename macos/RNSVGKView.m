@@ -41,7 +41,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
 
 - (void)didSetProps:(NSArray<NSString *> *)changedProps
 {
-  RNSVGKImage *image;
+  RNSVGKImage *image = _image;
 
   // The "data" prop always overrides the "source" prop.
   if (_data) {
@@ -59,6 +59,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
     if ([changedProps containsObject:@"cacheKey"]) {
       image = _bridge.svgCache.images[_cacheKey];
     }
+  } else {
+    image = nil;
   }
 
   // Remove the previous image while loading.
