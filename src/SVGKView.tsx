@@ -30,6 +30,7 @@ const RNSVGKView = requireNativeComponent('RNSVGKView')
 
 export const SVGKView = (props: Props) => (
   <RNSVGKView
+    onError={console.error}
     {...props}
     source={props.source && Image.resolveAssetSource(props.source)}
     style={computeStyle(props)}
