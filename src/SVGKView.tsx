@@ -6,7 +6,10 @@ import {
   NativeSyntheticEvent,
   requireNativeComponent,
   StyleSheet,
-  ViewProps,
+  ShadowStyleIOS,
+  FlexStyle,
+  StyleProp,
+  EventProps,
 } from 'react-native-macos'
 import { SVGKPreloadOptions, preloadSvg } from './SVGKCache'
 
@@ -15,11 +18,18 @@ export type SVGLoadEvent = NativeSyntheticEvent<{
   source: { height: number; width: number; url: string }
 }>
 
-interface Props extends ViewProps {
+interface Style extends FlexStyle, ShadowStyleIOS {
+  opacity?: number
+  backfaceVisibility?: boolean
+  shouldRasterizeIOS?: boolean
+}
+
+interface Props extends EventProps {
   data?: string
   source?: ImageURISource | ImageRequireSource
   cacheKey?: string
   tintColor?: string
+  style?: StyleProp<Style>
   onLoadStart?: () => void
   onError?: (event: SVGErrorEvent) => void
   onLoad?: (event: SVGLoadEvent) => void
@@ -44,7 +54,7 @@ SVGKView.displayName = 'SVGKView'
  */
 SVGKView.preload = (
   options: SVGKPreloadOptions & {
-    style?: ViewProps['style']
+    style?: Style
     tintColor?: string
   },
 ): React.SFC<Props> => {
