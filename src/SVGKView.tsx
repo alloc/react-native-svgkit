@@ -10,6 +10,7 @@ import {
   FlexStyle,
   StyleProp,
   EventProps,
+  NativeMethodsMixin,
 } from 'react-native-macos'
 import { SVGKPreloadOptions, preloadSvg } from './SVGKCache'
 
@@ -38,26 +39,35 @@ interface Props extends EventProps {
 
 const RNSVGKView = requireNativeComponent('RNSVGKView')
 
-export const SVGKView = (props: Props) => (
-  <RNSVGKView
-    onError={console.error}
-    {...props}
-    source={props.source && Image.resolveAssetSource(props.source)}
-    style={computeStyle(props)}
-  />
-)
+export type SVGKView = React.ForwardRefExoticComponent<
+  Props & React.RefAttributes<NativeMethodsMixin>
+> & {
+  preload: (
+    options: SVGKPreloadOptions & {
+      style?: Style
+      tintColor?: string
+    },
+  ) => React.SFC<Props>
+}
+
+export const SVGKView = React.forwardRef<NativeMethodsMixin, Props>(
+  (props, ref) => (
+    <RNSVGKView
+      onError={console.error}
+      {...props}
+      source={props.source && Image.resolveAssetSource(props.source)}
+      style={computeStyle(props)}
+      ref={ref}
+    />
+  ),
+) as SVGKView
 
 SVGKView.displayName = 'SVGKView'
 
 /**
  * Create a component that renders the given <svg> source and preloads it.
  */
-SVGKView.preload = (
-  options: SVGKPreloadOptions & {
-    style?: Style
-    tintColor?: string
-  },
-): React.SFC<Props> => {
+SVGKView.preload = options => {
   const cacheKey = preloadSvg(options)
   return props => (
     <SVGKView
