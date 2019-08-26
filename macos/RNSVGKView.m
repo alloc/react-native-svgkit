@@ -25,7 +25,6 @@
   SVGKImageView *_imageView;
   BOOL _isMeasuringImage;
   BOOL _isImageMeasured;
-  BOOL _ignoreResize;
 }
 
 - (instancetype)initWithBridge:(RCTBridge *)bridge
@@ -128,11 +127,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
     }
 
     // Disable "setFrame:" sync while measuring the image.
-    _ignoreResize = YES;
     [self measureImage:rawImage
        sizeConstraints:self.frame.size
       completionBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
-        self->_ignoreResize = NO;
         if (image == self->_image) {
           didLoad();
         }
