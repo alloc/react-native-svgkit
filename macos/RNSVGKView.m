@@ -296,7 +296,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
           [self resizeImageView];
         } else {
           self->_isImageMeasured = NO;
-          self.frame = self.frame;
+          [self reactSetFrame:self.frame];
         }
       }
     }];
