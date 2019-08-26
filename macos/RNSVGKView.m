@@ -323,4 +323,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
   }
 }
 
+- (BOOL)isFlipped
+{
+  return YES;
+}
+
 @end
