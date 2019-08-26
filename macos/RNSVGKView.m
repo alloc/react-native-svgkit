@@ -292,7 +292,7 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
      sizeConstraints:frame.size
     completionBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *,NSView *> *viewRegistry) {
       if (image == self->_image) {
-        if (CGRectEqualToRect(frame, self.frame)) {
+        if (CGSizeEqualToSize(frame.size, self.frame.size)) {
           [self resizeImageView];
         } else {
           self->_isImageMeasured = NO;
