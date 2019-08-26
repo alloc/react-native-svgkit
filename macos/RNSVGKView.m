@@ -31,6 +31,7 @@
 {
   if (self = [super initWithFrame:NSZeroRect]) {
     _bridge = bridge;
+    _anchorPoint = (NSPoint){0.5, 0.5};
   }
   return self;
 }
@@ -222,8 +223,8 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
                                scale:&scale];
 
     _imageView.frame = (NSRect){
-      { MAX(0, (maxSize.width - size.width) / 2),
-        MAX(0, (maxSize.height - size.height) / 2) },
+      { MAX(0, (maxSize.width - size.width) * _anchorPoint.x),
+        MAX(0, (maxSize.height - size.height) * _anchorPoint.y) },
       size
     };
 

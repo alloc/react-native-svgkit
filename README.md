@@ -63,6 +63,12 @@ The previous image is cleared immediately whenever the `data` or `source` props 
 
 Override the `fillColor` and/or `strokeColor` of every shape in the SVG.
 
+### props.anchorPoint
+
+After the SVG is resized to fit its view, it gets aligned based on the difference between its view size and image size.
+
+Defaults to `{x: 0.5, y: 0.5}` (center alignment)
+
 ### props.onLoadStart
 
 Called when the `source` prop begins loading.

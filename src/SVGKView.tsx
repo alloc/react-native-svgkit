@@ -11,6 +11,7 @@ import {
   StyleProp,
   EventProps,
   NativeMethodsMixin,
+  PointPropType,
 } from 'react-native-macos'
 import { SVGKPreloadOptions, preloadSvg } from './SVGKCache'
 
@@ -30,6 +31,7 @@ interface Props extends EventProps {
   source?: ImageURISource | ImageRequireSource
   cacheKey?: string
   tintColor?: string
+  anchorPoint?: PointPropType
   style?: StyleProp<Style>
   onLoadStart?: () => void
   onError?: (event: SVGErrorEvent) => void
@@ -46,6 +48,7 @@ export type SVGKView = React.ForwardRefExoticComponent<
     options: SVGKPreloadOptions & {
       style?: Style
       tintColor?: string
+      anchorPoint?: PointPropType
     },
   ) => React.SFC<Props>
 }
@@ -71,6 +74,7 @@ SVGKView.preload = options => {
   const cacheKey = preloadSvg(options)
   return props => (
     <SVGKView
+      anchorPoint={options.anchorPoint}
       tintColor={options.tintColor}
       {...props}
       style={[props.style, options.style]}
