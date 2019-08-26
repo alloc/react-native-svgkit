@@ -183,8 +183,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
     _imageView = [[SVGKFastImageView alloc] initWithSVGKImage:image];
   }
 
-  [self resizeImageView];
-  [self addSubview:_imageView];
+  if (_isImageMeasured) {
+    [self resizeImageView];
+  }
 }
 
 - (void)setTintColor:(NSColor *)tintColor
@@ -234,6 +235,9 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
         layer.affineTransform = CGAffineTransformMakeScale(scale, scale);
       }];
     }
+
+    // The image is not mounted until first non-empty size.
+    [self addSubview:_imageView];
   }
 }
 
