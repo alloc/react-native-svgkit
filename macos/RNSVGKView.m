@@ -277,12 +277,14 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
 
 - (void)reactSetFrame:(NSRect)frame
 {
+  NSSize oldSize = self.frame.size;
   [super reactSetFrame:frame];
   if (_isMeasuringImage) {
     return;
   }
   if (_isImageMeasured) {
-    return [self resizeImageView];
+    if (CGSizeEqualToSize(frame.size, oldSize)) return;
+    _isImageMeasured = NO;
   }
   if (CGSizeEqualToSize(frame.size, CGSizeZero)) {
     return; // No point in measuring without a size constraint.
