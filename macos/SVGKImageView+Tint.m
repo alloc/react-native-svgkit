@@ -6,7 +6,10 @@
 {
   CALayer *rootLayer = self.image.CALayerTree;
   if (rootLayer) {
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
     [self _applyTintColor:tintColor toLayers:rootLayer.sublayers];
+    [CATransaction commit];
   }
 }
 
