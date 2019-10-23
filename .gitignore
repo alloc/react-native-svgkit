@@ -1,5 +1,6 @@
-node_modules/
 lib/
+node_modules/
+xcuserdata/
+DerivedData/
 
-xcuserdata
-pnpm-lock.yaml
+/SVGKit/

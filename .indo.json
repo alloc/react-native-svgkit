@@ -1,0 +1,8 @@
+{
+  "repos": {
+    "SVGKit": {
+      "url": "git@github.com:aleclarson/SVGKit.git",
+      "head": "macos"
+    }
+  }
+}

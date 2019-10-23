@@ -1,4 +1,0 @@
-[submodule "SVGKit"]
-	path = SVGKit
-	url = https://github.com/aleclarson/SVGKit.git
-	branch = macos
