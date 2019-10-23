@@ -1,5 +1,6 @@
 .*
 TODO.md
+tsconfig.json
 pnpm-lock.yaml
 /example/
 xcuserdata
