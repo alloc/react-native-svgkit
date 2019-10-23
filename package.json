@@ -1,6 +1,6 @@
 {
   "name": "@alloc/react-native-svgkit",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "description": "SVG support for react-native-macos",
   "repository": "alloc/react-native-svgkit",
