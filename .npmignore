@@ -1,0 +1,6 @@
+.*
+TODO.md
+pnpm-lock.yaml
+/example/
+xcuserdata
+DerivedData
