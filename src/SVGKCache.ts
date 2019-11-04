@@ -3,7 +3,7 @@ import {
   ImageRequireSource,
   ImageURISource,
   Image,
-} from 'react-native-macos'
+} from 'react-native'
 import { useEffect, useMemo } from 'react'
 
 const { RNSVGKImageCache: nativeCache } = NativeModules

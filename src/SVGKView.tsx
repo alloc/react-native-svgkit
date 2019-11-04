@@ -12,7 +12,7 @@ import {
   EventProps,
   NativeMethodsMixin,
   PointPropType,
-} from 'react-native-macos'
+} from 'react-native'
 import { SVGKPreloadOptions, preloadSvg } from './SVGKCache'
 
 export type SVGErrorEvent = NativeSyntheticEvent<{ error: string }>
