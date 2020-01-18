@@ -54,15 +54,27 @@ export type SVGKView = React.ForwardRefExoticComponent<
 }
 
 export const SVGKView = React.forwardRef<NativeMethodsMixin, Props>(
-  (props, ref) => (
-    <RNSVGKView
-      onError={console.error}
-      {...props}
-      source={props.source && Image.resolveAssetSource(props.source)}
-      style={computeStyle(props)}
-      ref={ref}
-    />
-  ),
+  (props, ref) => {
+    const source = props.source && Image.resolveAssetSource(props.source)
+    const onError =
+      props.onError ||
+      (source &&
+        ((event: SVGErrorEvent) =>
+          console.error(
+            `Unhandled error in SVGKView with (source = ${source.uri}): ` +
+              event.nativeEvent.error,
+          )))
+
+    return (
+      <RNSVGKView
+        {...props}
+        ref={ref}
+        source={source}
+        style={computeStyle(props)}
+        onError={onError}
+      />
+    )
+  },
 ) as SVGKView
 
 SVGKView.displayName = 'SVGKView'
