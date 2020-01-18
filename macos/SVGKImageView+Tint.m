@@ -1,4 +1,5 @@
 #import "SVGKImageView+Tint.h"
+#import <React/NSView+React.h>
 
 @implementation SVGKImageView (Tint)
 
@@ -6,10 +7,9 @@
 {
   CALayer *rootLayer = self.image.CALayerTree;
   if (rootLayer) {
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    [self _applyTintColor:tintColor toLayers:rootLayer.sublayers];
-    [CATransaction commit];
+    [CALayer performWithoutAnimation:^{
+      [self _applyTintColor:tintColor toLayers:rootLayer.sublayers];
+    }];
   }
 }
 
