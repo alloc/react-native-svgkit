@@ -3,6 +3,7 @@ import {
   Image,
   ImageURISource,
   ImageRequireSource,
+  ImageResizeMode,
   NativeSyntheticEvent,
   requireNativeComponent,
   StyleSheet,
@@ -32,6 +33,7 @@ interface Props extends EventProps {
   cacheKey?: string
   tintColor?: string
   anchorPoint?: PointPropType
+  resizeMode?: ImageResizeMode
   style?: StyleProp<Style>
   onLoadStart?: () => void
   onError?: (event: SVGErrorEvent) => void

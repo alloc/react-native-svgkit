@@ -218,9 +218,13 @@ RCT_NOT_IMPLEMENTED(- (instancetype)initWithFrame:(NSRect)frameRect)
   if (_imageView) {
     CGFloat scale = 1;
     NSSize maxSize = self.frame.size;
-    NSSize size = [self getImageSize:_imageView.image
-                             maxSize:maxSize
-                               scale:&scale];
+    
+    // TODO: support "Center" and "Cover" modes
+    NSSize size = _resizeMode == RCTResizeModeStretch
+      ? maxSize
+      : [self getImageSize:_imageView.image
+                   maxSize:maxSize
+                     scale:&scale];
 
     _imageView.frame = (NSRect){
       { MAX(0, (maxSize.width - size.width) * _anchorPoint.x),
