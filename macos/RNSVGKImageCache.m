@@ -206,9 +206,7 @@ RCT_EXPORT_METHOD(unloadSvg:(NSString *)key)
       }
       RCTExecuteOnMainQueue(^{
         self->_error = error;
-        for (id<RNSVGKImageObserver> observer in self->_observers) {
-          [observer svgImageDidLoad:self];
-        }
+        [self _doneLoading];
       });
     }];
 
@@ -219,19 +217,32 @@ RCT_EXPORT_METHOD(unloadSvg:(NSString *)key)
 {
   // Avoid parsing on the main thread.
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-    SVGKImage *image = [SVGKImage imageWithData:data];
-    RCTExecuteOnMainQueue(^{
-      NSArray<NSError *> *errors = image.parseErrorsAndWarnings.errorsFatal;
-      if (errors.count > 0) {
-        self->_error = errors[0];
-      } else {
-        self->_image = image;
-      }
-      for (id<RNSVGKImageObserver> observer in self->_observers) {
-        [observer svgImageDidLoad:self];
-      }
-    });
+    @try {
+      SVGKImage *image = [SVGKImage imageWithData:data];
+      RCTExecuteOnMainQueue(^{
+        NSArray<NSError *> *errors = image.parseErrorsAndWarnings.errorsFatal;
+        if (errors.count > 0) {
+          self->_error = errors[0];
+        } else {
+          self->_image = image;
+        }
+        [self _doneLoading];
+      });
+    } @catch (NSException *e) {
+      NSError *error = RCTErrorWithMessage(e.reason);
+      RCTExecuteOnMainQueue(^{
+        self->_error = error;
+        [self _doneLoading];
+      });
+    }
   });
+}
+
+- (void)_doneLoading
+{
+  for (id<RNSVGKImageObserver> observer in _observers) {
+    [observer svgImageDidLoad:self];
+  }
 }
 
 @end
