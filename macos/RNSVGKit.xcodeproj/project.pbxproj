@@ -115,8 +115,6 @@
 		70395955222D72D2004D2364 /* SVGKFastImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 703958EC222D72D2004D2364 /* SVGKFastImageView.m */; };
 		70395956222D72D2004D2364 /* SVGKLayeredImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 703958ED222D72D2004D2364 /* SVGKLayeredImageView.m */; };
 		70395957222D72D2004D2364 /* SVGKImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 703958F1222D72D2004D2364 /* SVGKImageView.m */; };
-		70395960222D86B6004D2364 /* CocoaLumberjack.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7039595A222D7E71004D2364 /* CocoaLumberjack.framework */; };
-		70395B94222DDDD9004D2364 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7039595A222D7E71004D2364 /* CocoaLumberjack.framework */; };
 		70395BEA223006A1004D2364 /* SVGKImageView+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = 70395BE9223006A1004D2364 /* SVGKImageView+Tint.m */; };
 		70408039222CAAD1002B7C38 /* RNSVGKShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408033222CAAD1002B7C38 /* RNSVGKShadowView.m */; };
 		7040803A222CAAD1002B7C38 /* RNSVGKViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408034222CAAD1002B7C38 /* RNSVGKViewManager.m */; };
@@ -196,19 +194,6 @@
 			remoteInfo = React;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		58B511D91A9E6C8500147676 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "include/$(PRODUCT_NAME)";
-			dstSubfolderSpec = 16;
-			files = (
-				70395960222D86B6004D2364 /* CocoaLumberjack.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNSVGKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSVGKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -450,7 +435,6 @@
 		703958EF222D72D2004D2364 /* SVGKFastImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGKFastImageView.h; sourceTree = "<group>"; };
 		703958F0222D72D2004D2364 /* SVGKLayeredImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGKLayeredImageView.h; sourceTree = "<group>"; };
 		703958F1222D72D2004D2364 /* SVGKImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVGKImageView.m; sourceTree = "<group>"; };
-		7039595A222D7E71004D2364 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "../SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/Mac/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		70395962222D87E6004D2364 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		70395964222D87EE004D2364 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		70395966222D8A71004D2364 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native-macos/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
@@ -464,20 +448,10 @@
 		70408036222CAAD1002B7C38 /* RNSVGKView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSVGKView.m; sourceTree = "<group>"; };
 		70408037222CAAD1002B7C38 /* RNSVGKViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKViewManager.h; sourceTree = "<group>"; };
 		70408038222CAAD1002B7C38 /* RNSVGKShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKShadowView.h; sourceTree = "<group>"; };
+		7051008E256FF591001CCC2F /* SVGKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SVGKit-Prefix.pch"; path = "../SVGKit/SVGKitLibrary/SVGKit-iOS/SVGKit-Prefix.pch"; sourceTree = "<group>"; };
 		70970B7E223AC1C4006EAF08 /* RNSVGKImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKImageCache.h; sourceTree = "<group>"; };
 		70970B87223AC1C4006EAF08 /* RNSVGKImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSVGKImageCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		58B511D81A9E6C8500147676 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				70395B94222DDDD9004D2364 /* CocoaLumberjack.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		134814211AA4EA7D00B7C361 /* Products */ = {
@@ -501,6 +475,7 @@
 		70395798222D6A53004D2364 /* SVGKit */ = {
 			isa = PBXGroup;
 			children = (
+				7051008E256FF591001CCC2F /* SVGKit-Prefix.pch */,
 				70395810222D72D2004D2364 /* AppKit additions */,
 				70395828222D72D2004D2364 /* DOM classes */,
 				703958DD222D72D2004D2364 /* Exporters */,
@@ -883,7 +858,6 @@
 			children = (
 				70395964222D87EE004D2364 /* Foundation.framework */,
 				70395962222D87E6004D2364 /* QuartzCore.framework */,
-				7039595A222D7E71004D2364 /* CocoaLumberjack.framework */,
 				7040802E222CAA34002B7C38 /* CoreGraphics.framework */,
 				70408030222CAA9A002B7C38 /* libxml2.tbd */,
 			);
@@ -925,8 +899,6 @@
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNSVGKit" */;
 			buildPhases = (
 				58B511D71A9E6C8500147676 /* Sources */,
-				58B511D81A9E6C8500147676 /* Frameworks */,
-				58B511D91A9E6C8500147676 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -957,6 +929,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -1278,7 +1251,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/Mac";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "../SVGKit/SVGKitLibrary/SVGKit-iOS/SVGKit-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1297,7 +1269,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/Mac";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "../SVGKit/SVGKitLibrary/SVGKit-iOS/SVGKit-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -1367,7 +1338,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/Mac";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "../SVGKit/SVGKitLibrary/SVGKit-iOS/SVGKit-Prefix.pch";
 				HEADER_SEARCH_PATHS = (

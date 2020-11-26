@@ -19,9 +19,6 @@ npm install @alloc/react-native-svgkit
   - AppKit.framework
   - QuartzCore.framework
   - CoreGraphics.framework
-  - ./SVGKit/3rd-party-frameworks/CocoaLumberjack-2.2.0/Mac/CocoaLumberjack.framework
-
-3. Add `CocoaLumberjack.framework` to "General > Embedded Binaries" under your target
 
 &nbsp;
 
