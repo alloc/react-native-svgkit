@@ -1,5 +1,6 @@
 #import "SVGKImageView+Tint.h"
 #import <React/NSView+React.h>
+#import <QuartzCore/CAShapeLayer.h>
 
 @implementation SVGKImageView (Tint)
 

@@ -119,6 +119,11 @@
 		70408039222CAAD1002B7C38 /* RNSVGKShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408033222CAAD1002B7C38 /* RNSVGKShadowView.m */; };
 		7040803A222CAAD1002B7C38 /* RNSVGKViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408034222CAAD1002B7C38 /* RNSVGKViewManager.m */; };
 		7040803B222CAAD1002B7C38 /* RNSVGKView.m in Sources */ = {isa = PBXBuildFile; fileRef = 70408036222CAAD1002B7C38 /* RNSVGKView.m */; };
+		7054CB9625CC9164009BA7A8 /* RNSVGKit.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = 7054CB9525CC9149009BA7A8 /* RNSVGKit.h */; };
+		7054CB9725CC9380009BA7A8 /* RNSVGKView.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = 70408035222CAAD1002B7C38 /* RNSVGKView.h */; };
+		7054CB9825CC938D009BA7A8 /* SVGKImageView.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = 703958EE222D72D2004D2364 /* SVGKImageView.h */; };
+		7054CB9925CC94BF009BA7A8 /* SVGKImage.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = 703957A6222D6A70004D2364 /* SVGKImage.h */; };
+		7054CB9A25CC9663009BA7A8 /* SVGKDefine.h in Copy Headers */ = {isa = PBXBuildFile; fileRef = 703957A1222D6A70004D2364 /* SVGKDefine.h */; };
 		70970B88223AC1C4006EAF08 /* RNSVGKImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 70970B87223AC1C4006EAF08 /* RNSVGKImageCache.m */; };
 /* End PBXBuildFile section */
 
@@ -194,6 +199,24 @@
 			remoteInfo = React;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7054CB9025CB103D009BA7A8 /* Copy Headers */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = include/RNSVGKit;
+			dstSubfolderSpec = 16;
+			files = (
+				7054CB9A25CC9663009BA7A8 /* SVGKDefine.h in Copy Headers */,
+				7054CB9925CC94BF009BA7A8 /* SVGKImage.h in Copy Headers */,
+				7054CB9825CC938D009BA7A8 /* SVGKImageView.h in Copy Headers */,
+				7054CB9725CC9380009BA7A8 /* RNSVGKView.h in Copy Headers */,
+				7054CB9625CC9164009BA7A8 /* RNSVGKit.h in Copy Headers */,
+			);
+			name = "Copy Headers";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libRNSVGKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRNSVGKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -449,6 +472,8 @@
 		70408037222CAAD1002B7C38 /* RNSVGKViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKViewManager.h; sourceTree = "<group>"; };
 		70408038222CAAD1002B7C38 /* RNSVGKShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKShadowView.h; sourceTree = "<group>"; };
 		7051008E256FF591001CCC2F /* SVGKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SVGKit-Prefix.pch"; path = "../SVGKit/SVGKitLibrary/SVGKit-iOS/SVGKit-Prefix.pch"; sourceTree = "<group>"; };
+		7054CB9325CC7D19009BA7A8 /* CATransaction+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CATransaction+Private.h"; sourceTree = "<group>"; };
+		7054CB9525CC9149009BA7A8 /* RNSVGKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNSVGKit.h; sourceTree = "<group>"; };
 		70970B7E223AC1C4006EAF08 /* RNSVGKImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSVGKImageCache.h; sourceTree = "<group>"; };
 		70970B87223AC1C4006EAF08 /* RNSVGKImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSVGKImageCache.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -532,6 +557,7 @@
 				7039580D222D72D2004D2364 /* CAShapeLayerWithHitTest.m */,
 				7039580E222D72D2004D2364 /* SVGTextLayer.m */,
 				7039580F222D72D2004D2364 /* CGPathAdditions.h */,
+				7054CB9325CC7D19009BA7A8 /* CATransaction+Private.h */,
 			);
 			name = "QuartzCore additions";
 			path = "../SVGKit/Source/QuartzCore additions";
@@ -867,6 +893,7 @@
 		70408032222CAAC7002B7C38 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				7054CB9525CC9149009BA7A8 /* RNSVGKit.h */,
 				70970B7E223AC1C4006EAF08 /* RNSVGKImageCache.h */,
 				70970B87223AC1C4006EAF08 /* RNSVGKImageCache.m */,
 				70408038222CAAD1002B7C38 /* RNSVGKShadowView.h */,
@@ -898,6 +925,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 58B511EF1A9E6C8500147676 /* Build configuration list for PBXNativeTarget "RNSVGKit" */;
 			buildPhases = (
+				7054CB9025CB103D009BA7A8 /* Copy Headers */,
 				58B511D71A9E6C8500147676 /* Sources */,
 			);
 			buildRules = (
